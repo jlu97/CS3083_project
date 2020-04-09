@@ -1,0 +1,55 @@
+<html>
+<head>
+</head>
+<body>
+
+<h2>Photo ID: {{photoID}}</h2>
+<br>
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+		text-align: center;
+	}
+</style>
+
+People tagged in the photo:
+
+<table>
+	<th>username</th>
+	<th>First Name</th>
+	<th>Last Name</th>
+
+{% for line in tag %}
+	<tr>
+		<td>{{line.username}}</td>
+		<td>{{line.firstName}}</td>
+		<td>{{line.lastName}}</td>
+	</tr>
+{% endfor %}
+
+</table>
+<br>
+
+People's reaction to the photo:
+
+<table>
+	<th>Reaction Time</th>
+	<th>Emoji</th>
+	<th>Comment</th>
+
+{% for data in reaction %}
+	<tr>
+		<td>{{data.reactionTime}}</td>
+		<td>{{data.emoji}}</td>
+		<td>{{data.comment}}</td>
+	</tr>
+{% endfor %}
+
+</table>
+<br>
+
+<a href="/logout">Logout</a>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<html>
+<head>
+</head>
+<body>
+<form action="/post" method="POST">
+	<h1>Welcome {{User}}</h1>
+	<input type="text" name = "photo" placeholder="photo" required/> </br>
+	<input type="submit" value = Share />
+</form>
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+		text-align: center;
+	}
+</style>
+
+Photos:
+
+<table>
+	<th>Time</th>
+	<th>Photo ID</th>
+	<th>Poster</th>
+	<th>Photo Info</th>
+
+{% for line in photo %}
+	<tr>
+		<td>{{line.postingDate}}</td>
+		<td>{{line.pID}}</td>
+		<td>{{line.firstName}} {{line.lastName}}</td>
+		<td><a href="{{ url_for('photo_info', pID=line.pID) }}">more</a></td>
+	</tr>
+{% endfor %}
+</table>
+
+<!-- <a href="/select_blogger">Select a blogger</a> -->
+<br>
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>
