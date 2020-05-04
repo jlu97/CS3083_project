@@ -1,0 +1,17 @@
+<html>
+<head>
+</head>
+<body>
+
+<form action="/friend_group" method="POST">
+  <h3>Choose both Creator and Group Name to share your photo in a friend group:</h3>
+	{% for friendGroup in group %}
+  <input type="hidden" name="pID" value="{{pID}}" /><br>
+  <input type="radio" name="groupCreator" value="{{friendGroup.groupCreator}}" required>Creator: {{friendGroup.groupCreator}}</input><br>
+	<input type="radio" name="groupName" value="{{friendGroup.groupName}}" required>Group Name: {{friendGroup.groupName}}</input><br>
+	{% endfor %}
+  <br><input type="submit" value=Share />
+</form>
+
+</body>
+</html>

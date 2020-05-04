@@ -2,38 +2,89 @@
 <head>
 </head>
 <body>
-<form action="/post" method="POST">
-	<h1>Welcome {{User}}</h1>
-	<input type="text" name = "photo" placeholder="photo" required/> </br>
-	<input type="submit" value = Share />
-</form>
 
 <style type="text/css">
 	table, th, td{
 		border: 1px solid black;
 		text-align: center;
 	}
+	.accept{ display: inline; }
+	.decline{ display: inline; }
 </style>
 
-Photos:
+
+{% for name in user %}
+<h1>Welcome {{name.firstName}} {{name.lastName}}</h1>
+{% endfor %}
+
+<form action="/share" method="POST">
+	<h3>Enter your photo file path to share:</h3>
+	<input type="text" name="photo" placeholder="Enter the photo file path" size = "40" required>
+	Ex: /Users/user/Desktop/photo.png or C:\Windows\Users\Desktop\photo.png</input><br>
+	<input type="radio" name="allFollowers" value=1 required>Share to all followers</input><br>
+	<input type="radio" name="allFollowers" value=0 required>Share only to members of your friend groups</input><br>
+	<!--
+	{% for friendGroup in group %}
+	<input type="hidden" name="groupName" value="{{friendGroup.groupName}}" />
+	<input type="hidden" name="groupCreator" value="{{friendGroup.groupCreator}}" />
+	<input type="radio" name="allFollowers" value=0 required>Share to {{friendGroup.groupName}}</input><br>
+	{% endfor %}
+	-->
+	<input type="text" name="caption" placeholder="Include a caption for the photo" size = "40"></input>
+	<br>
+  <input type="submit" value=Share />
+</form>
+
+<form action="/friendGroup" method="POST">
+	<h3>Enter group name to create a friend group:</h3>
+	<input type="text" name="groupName" placeholder="Group Name" required /><br>
+	<input type="text" name="description" placeholder="Include a description" size = "40" /><br>
+  <input type="submit" value=Create />
+</form>
+
+<form action="/follow" method="POST">
+	<h3>Enter the username of someone you want to follow:</h3>
+	  <input type="text" name="followee" placeholder="Enter username" required /><br>
+  	<input type="submit" value=Follow />
+</form>
+
+<h3>List of requests from follower:</h3>
+<ul>
+	{% for requests in follow %}
+  <li>{{requests.firstName}} {{requests.lastName}}
+		<form class="accept" action="/setFollowTrue" method="POST">
+			<input type="hidden" name="follower" value="{{requests.follower}}" />
+			<input type="submit" value=Accept />
+		</form>
+		<form class="decline" action="/setFollowFalse" method="POST">
+			<input type="hidden" name="follower" value="{{requests.follower}}" />
+			<input type="submit" value=Decline />
+		</form>
+	</li>
+	{% endfor %}
+</ul>
+<br>
+
+<h2>Photos:</h2>
 
 <table>
+	<th>Photo</th>
 	<th>Time</th>
 	<th>Photo ID</th>
 	<th>Poster</th>
 	<th>Photo Info</th>
 
-{% for line in photo %}
+{% for photoInfo in photo %}
 	<tr>
-		<td>{{line.postingDate}}</td>
-		<td>{{line.pID}}</td>
-		<td>{{line.firstName}} {{line.lastName}}</td>
-		<td><a href="{{ url_for('photo_info', pID=line.pID) }}">more</a></td>
+		<td><a href="{{url_for('photo', pID=photoInfo.pID)}}">Click to see photo</a></td>
+		<td>{{photoInfo.postingDate}}</td>
+		<td>{{photoInfo.pID}}</td>
+		<td>{{photoInfo.firstName}} {{photoInfo.lastName}}</td>
+		<td><a href="{{url_for('photo_info', pID=photoInfo.pID)}}">more</a></td>
 	</tr>
 {% endfor %}
 </table>
 
-<!-- <a href="/select_blogger">Select a blogger</a> -->
 <br>
 <a href="/logout">Logout</a>
 
